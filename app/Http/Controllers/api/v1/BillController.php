@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Bill;
 use App\Models\Slot;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BillController extends Controller
 {
@@ -68,9 +69,20 @@ class BillController extends Controller
      * @param  \App\Models\Bill  $bill
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bill $bill)
+    public function update(Request $request, Bill $bill, $id)
     {
-        $bill->update($request->all());
+        $current_date = date('Y-m-d H:i:s');
+
+        $bill = Bill::find($id);
+        $bill->date_departure = $current_date;
+        $bill->save();
+
+        $slot_id = DB::table('bills')->where('id', $id)->value('slot_id');
+
+        $slot = Slot::find($slot_id);
+        $slot->vehicle_plate = null;
+        $slot->available = 1;
+        $slot->save();
  
         return response()->json(['data' => $bill], 200);
     }
