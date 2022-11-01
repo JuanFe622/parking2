@@ -28,7 +28,15 @@ class VehicleController extends Controller
      */
     public function store(Request $request)
     {
-        $vehicle = Vehicle::create($request->all());
+        //$vehicle = Vehicle::create($request->all());
+
+        $vehicle = new vehicle();
+        $vehicle->plate = $request->input('plate');
+        $vehicle->color = $request->input('color');
+        $vehicle->type = $request->input('type');
+        $vehicle->owner_id = $request->input('owner_id');
+
+        $vehicle->save();
  
         return response()->json(['data' => $vehicle], 201);
     }
