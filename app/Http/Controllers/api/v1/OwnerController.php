@@ -28,7 +28,13 @@ class OwnerController extends Controller
      */
     public function store(Request $request)
     {
-        $owner = Owner::create($request->all());
+        //$owner = Owner::create($request->all());
+
+        $owner = new owner();
+        $owner->id = $request->input('id');
+        $owner->name = $request->input('name');
+
+        $owner->save();
  
         return response()->json(['data' => $owner], 201);
     }
