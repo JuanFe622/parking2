@@ -33,13 +33,13 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->foreign('vehicle_plate')->references('plate')->on('vehicles')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+            // $table->foreign('vehicle_plate')->references('plate')->on('vehicles')
+            //     ->onDelete('cascade')
+            //     ->onUpdate('cascade');
 
-            $table->foreign('vehicle_type')->references('name')->on('types')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+            // $table->foreign('vehicle_type')->references('name')->on('types')
+            //     ->onDelete('cascade')
+            //     ->onUpdate('cascade');
         });
     }
 

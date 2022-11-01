@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Models\Owner;
 
 
 class OwnerSeeder extends Seeder
@@ -17,6 +18,9 @@ class OwnerSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Owner::create([
+            'id' => '1002654386',
+            'name' => 'Juan Felipe',
+        ]);
     }
 }
