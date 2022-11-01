@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\v1;
 
 use App\Models\Slot;
+use App\Models\Parking;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\api\v1\SlotCollection;
@@ -50,7 +51,7 @@ class SlotController extends Controller
      * @param  \App\Models\Slot  $slot
      * @return \Illuminate\Http\Response
      */
-    public function show(Slot $slot)
+    public function show(Slot $slots)
     {
         return (new SlotResource($slots))
         ->response()

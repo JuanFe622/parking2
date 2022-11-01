@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bill;
+use App\Models\Slot;
 use Illuminate\Http\Request;
 
 class BillController extends Controller
@@ -28,8 +29,24 @@ class BillController extends Controller
      */
     public function store(Request $request)
     {
-        $bill = Bill::create($request->all());
- 
+        // $bill = Bill::create($request->all());
+
+        $current_date = date('Y-m-d H:i:s');
+
+        $bill = new bill();
+        $bill->parking_id = $request->input('parking_id');
+        $bill->slot_id = $request->input('slot_id');
+        $bill->date_entry = $current_date;
+        $bill->vehicle_plate = $request->input('vehicle_plate');
+        $bill->vehicle_type = $request->input('vehicle_type');
+
+        $slot = Slot::find($request->input('slot_id'));
+        $slot->vehicle_plate = $request->input('vehicle_plate');
+        $slot->available = 0;
+
+        $slot->save();
+        $bill->save();
+
         return response()->json(['data' => $bill], 201);
     }
 

@@ -21,12 +21,15 @@ use App\Http\Controllers\api\v1\BillController;
 */
 
 Route::middleware(['auth:sanctum'])->group(function () {
+
     Route::apiResource('v1/parkings', \App\Http\Controllers\api\v1\ParkingController::class);
     Route::apiResource('v1/types', \App\Http\Controllers\api\v1\TypeController::class);
     Route::apiResource('v1/vehicles', \App\Http\Controllers\api\v1\VehicleController::class);
     Route::apiResource('v1/owners', \App\Http\Controllers\api\v1\OwnerController::class);
     Route::apiResource('v1/slots', \App\Http\Controllers\api\v1\SlotController::class);
     Route::apiResource('v1/bills', \App\Http\Controllers\api\v1\BillController::class);
+
+    Route::post('v1/bill', [BillController::class, 'store']);
 
     Route::post('/v1/logout', [App\Http\Controllers\api\v1\AuthController::class,'logout'])->name('api.logout');
 
