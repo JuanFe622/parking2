@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('slot_id');
             $table->dateTime('date_entry');
             $table->dateTime('date_departure')->nullable();
-            $table->string('vehicle_plate', 6)->unique();
+            $table->string('vehicle_plate', 6);
             $table->enum('vehicle_type', ['Car', 'Motorcycle']);
             $table->float('rate_price', 8, 2)->default(0);
             $table->float('total_price', 8, 2)->default(0);

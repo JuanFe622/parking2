@@ -30,6 +30,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('v1/bills', \App\Http\Controllers\api\v1\BillController::class);
 
     Route::post('v1/bill', [BillController::class, 'store']);
+    Route::get('v1/bill/{bill_id}', [BillController::class, 'update']);
+
 
     Route::post('/v1/logout', [App\Http\Controllers\api\v1\AuthController::class,'logout'])->name('api.logout');
 
