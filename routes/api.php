@@ -32,6 +32,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('v1/owner', [OwnerController::class, 'store']);
     Route::post('v1/vehicle', [VehicleController::class, 'store']);
 
+    Route::get('v1/vehicles', [VehicleController::class, 'index']);
+
     Route::post('v1/bill', [BillController::class, 'store']);
     Route::get('v1/bill/{bill_id}', [BillController::class, 'update']);
 
