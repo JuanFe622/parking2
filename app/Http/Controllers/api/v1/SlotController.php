@@ -26,11 +26,13 @@ class SlotController extends Controller
 
         //$slots = $slots->get();
 
-        return response()->json(['data' => $slots], 200);
+        // return response()->json(['data' => $slots], 200);
 
         // return (new SlotCollection($slots))
         // ->response()
         // ->setStatusCode(200);
+
+        return response()->json(['data' => SlotResource::collection($slots)], 200);
         
     }
 
