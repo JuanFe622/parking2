@@ -41,14 +41,31 @@ class BillController extends Controller
         $bill->vehicle_plate = $request->input('vehicle_plate');
         $bill->vehicle_type = $request->input('vehicle_type');
 
-        $slot = Slot::find($request->input('slot_id'));
-        $slot->vehicle_plate = $request->input('vehicle_plate');
-        $slot->available = 0;
+        $plate = $request->input('vehicle_plate');
+        $exists = DB::table('slots')->where('vehicle_plate', $plate)->exists();
 
-        $slot->save();
-        $bill->save();
+        if (($slot = Slot::find($request->input('slot_id'))) == null) {
+            return response()->json(['data' => 'Slot not found'], 400);
+        }else{
+            $slot = Slot::find($request->input('slot_id'));
 
-        return response()->json(['data' => $bill], 201);
+            if ($slot->available == 0) {
+                return response()->json(['data' => 'Slot not available, please choose an available slot'], 400);
+            } else {
+                if($exists){
+                    return response()->json(['data' => 'Vehicle already parked'], 400);
+                }else{
+                    $slot->available = 0;
+                    $slot->vehicle_plate = $request->input('vehicle_plate');
+                    $slot->save();
+                    $bill->save();
+    
+                    return response()->json(['data' => 'Vehicle successfully parked'], 201);
+                }
+                
+            }
+        }
+         
     }
 
     /**
@@ -73,18 +90,25 @@ class BillController extends Controller
     {
         $current_date = date('Y-m-d H:i:s');
 
-        $bill = Bill::find($id);
-        $bill->date_departure = $current_date;
-        $bill->save();
+        if(($bill = Bill::find($id)) == null){
+            return response()->json(['data' => 'Bill not found'], 400);
+        }else{
+            $bill = Bill::find($id);
+            $bill->date_departure = $current_date;
+            $bill->save();
 
-        $slot_id = DB::table('bills')->where('id', $id)->value('slot_id');
+            $slot_id = DB::table('bills')->where('id', $id)->value('slot_id');
 
-        $slot = Slot::find($slot_id);
-        $slot->vehicle_plate = null;
-        $slot->available = 1;
-        $slot->save();
+            $slot = Slot::find($slot_id);
+            $slot->vehicle_plate = null;
+            $slot->available = 1;
+            $slot->save();
+
+            return response()->json(['data' => 'Vehicle successfully unparked'], 200);
+        }
+        
  
-        return response()->json(['data' => $bill], 200);
+        return response()->json(['data' => $bill, 'Vehicle successfully unparked'], 200);
     }
 
     /**

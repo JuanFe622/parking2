@@ -21,7 +21,8 @@ class SlotSeeder extends Seeder
     {
         Slot::create([
             'parking_id' => Parking::all()->random()->id,
-            'available' => true,
+            'vehicle_plate' => 'ABC123',
+            'available' => false,
         ]);
 
         Slot::create([
