@@ -22,10 +22,11 @@ class SlotController extends Controller
 
         if($request->has('available')){
             $slots = $slots->where('available', '=', 1);
+            return response()->json(['data' => SlotResource::collection($slots)], 200);
+        }else if($request->has('unavailable')){
+            $slots = $slots->where('available', '=', 0);
+            return response()->json(['data' => SlotResource::collection($slots)], 200);
         }
-
-        return response()->json(['data' => SlotResource::collection($slots)], 200);
-        
     }
 
     /**

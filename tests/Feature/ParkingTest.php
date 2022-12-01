@@ -2,10 +2,11 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ParkingTest extends TestCase
 
@@ -191,7 +192,49 @@ class ParkingTest extends TestCase
         ]);
     }
 
-    
+    public function test_show_unavailable_slots()
+    {
+        $user = User::find(1);
+
+        $response = $this
+            ->actingAs($user)
+            ->getJson("/api/v1/slots?unavailable")
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'ID',
+                        'Parking ID',
+                        'Available',
+                        'Vehicle Plate',
+                    ]
+                ]
+            ]);
+        
+        $this->assertDatabaseHas('slots', [ // Verifica que los slots estan ocupados
+            'available' => false,
+        ]);
+    }
+
+    public function test_show_stats()
+    {
+        $user = User::find(1);
+
+        $carsParked = DB::table('bills')->where('vehicle_type', 'Car')->where('date_departure', null)->count();
+        $motorcyclesParked = DB::table('bills')->where('vehicle_type', 'Motorcycle')->where('date_departure', null)->count();
+        $slotsAvailable = DB::table('slots')->where('available', 1)->count();
+
+        $response = $this
+            ->actingAs($user)
+            ->getJson("/api/v1/stats")
+            ->assertStatus(200)
+            ->assertJson([
+                'data' => 'Cars parked: '. $carsParked . ' | Motorcycles parked: ' . $motorcyclesParked. ' | Available Slots: ' .$slotsAvailable,
+            ]);
+
+    }
+
+ 
 }
 
 

@@ -24,9 +24,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('v1/owners', [OwnerController::class, 'index']);
     Route::get('v1/vehicles', [VehicleController::class, 'index']);
     Route::get('v1/slots?available', [SlotController::class, 'index']);
+    Route::get('v1/slots?unavailable', [SlotController::class, 'index']);
 
     Route::post('v1/bill', [BillController::class, 'store']);
     Route::get('v1/bill/{bill_id}', [BillController::class, 'update']);
+
+    Route::get('v1/stats', [BillController::class, 'showVehiclesParked']);
 
 
     Route::post('/v1/logout', [App\Http\Controllers\api\v1\AuthController::class,'logout'])->name('api.logout');
