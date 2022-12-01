@@ -9,17 +9,6 @@ use App\Http\Controllers\api\v1\OwnerController;
 use App\Http\Controllers\api\v1\SlotController;
 use App\Http\Controllers\api\v1\BillController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('v1/parkings', \App\Http\Controllers\api\v1\ParkingController::class);
@@ -43,7 +32,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/v1/logout', [App\Http\Controllers\api\v1\AuthController::class,'logout'])->name('api.logout');
 
 });
-
 
 
 Route::post(
