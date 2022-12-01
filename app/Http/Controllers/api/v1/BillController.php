@@ -41,6 +41,7 @@ class BillController extends Controller
         $bill->vehicle_plate = $request->input('vehicle_plate');
         $bill->vehicle_type = $request->input('vehicle_type');
 
+
         $plate = $request->input('vehicle_plate');
         $exists = DB::table('slots')->where('vehicle_plate', $plate)->exists();
 
@@ -78,7 +79,7 @@ class BillController extends Controller
     {
         return response()->json(['data' => $bill], 200);
     }
-
+    
     /**
      * Update the specified resource in storage.
      *
@@ -121,5 +122,17 @@ class BillController extends Controller
     {
         $bill->delete();
         return response(null, 204);
+    }
+
+    public function showVehiclesParked()
+    {
+        $carsParked = DB::table('bills')->where('vehicle_type', 'Car')->where('date_departure', null)->count();
+        $motorcyclesParked = DB::table('bills')->where('vehicle_type', 'Motorcycle')->where('date_departure', null)->count();
+        $slotsAvailable = DB::table('slots')->where('available', 1)->count();
+        return response()->json(['data' => 
+        'Cars parked: ' . $carsParked . 
+        ' | Motorcycles parked: ' . $motorcyclesParked . 
+        ' | Available Slots: ' .$slotsAvailable 
+        ], 200);
     }
 }
